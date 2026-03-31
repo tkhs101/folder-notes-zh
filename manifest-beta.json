@@ -1,7 +1,7 @@
 {
   "id": "folder-notes-zh",
   "name": "Folder Notes 中文版 Beta",
-  "version": "1.8.20-1-beta",
+  "version": "1.8.21-1-beta",
   "minAppVersion": "0.15.0",
   "description": "在文件夹中创建可直接访问的笔记，无需折叠文件夹，类似 Notion 的交互方式。",
   "author": "tkhs101",

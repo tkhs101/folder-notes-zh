@@ -31,8 +31,8 @@
 创建一个符合语义化版本的 Git tag，例如：
 
 ```bash
-git tag 1.8.20
-git push origin 1.8.20
+git tag 1.8.21
+git push origin 1.8.21
 ```
 
 仓库中的 GitHub Actions 会自动构建并创建 release，上传：
@@ -46,8 +46,8 @@ git push origin 1.8.20
 如果你想发布 Beta 版本，可以使用类似下面的 tag：
 
 ```bash
-git tag 1.8.20-1-beta
-git push origin 1.8.20-1-beta
+git tag 1.8.21-1-beta
+git push origin 1.8.21-1-beta
 ```
 
 Beta 工作流会上传：

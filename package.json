@@ -1,6 +1,6 @@
 {
 	"name": "folder-notes-zh",
-	"version": "1.8.20",
+	"version": "1.8.21",
 	"description": "Obsidian Folder Notes Chinese fork with publishable GitHub release setup.",
 	"main": "main.js",
 	"scripts": {
