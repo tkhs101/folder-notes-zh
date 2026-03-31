@@ -1,7 +1,7 @@
 {
-	"name": "folder-notes",
-	"version": "1.0.1",
-	"description": "Adds Folder Notes to the default file tree.",
+	"name": "folder-notes-zh",
+	"version": "1.8.20",
+	"description": "Obsidian Folder Notes Chinese fork with publishable GitHub release setup.",
 	"main": "main.js",
 	"scripts": {
 		"fn-dev": "node esbuild.config.mjs",
@@ -13,7 +13,11 @@
 		"fv-dev": "npm run folder-overview"
 	},
 	"keywords": [],
-	"author": "Lost Paul",
+	"author": "tkhs101",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/tkhs101/folder-notes-zh.git"
+	},
 	"license": "GPL-3.0-or-later",
 	"devDependencies": {
 		"@eslint/js": "^8.57.1",

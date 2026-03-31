@@ -14,15 +14,8 @@ jobs:
       - name: Checkout current branch
         uses: actions/checkout@v3
         with:
-          # This checks out the branch that triggered the workflow
-          submodules: recursive
           fetch-depth: 0
           ref: ${{ github.ref }}
-      
-      - name: Initialize and update submodules
-        run: | 
-            git submodule init
-            git submodule update --remote
 
       - name: Fetch all branches
         run: git fetch --all

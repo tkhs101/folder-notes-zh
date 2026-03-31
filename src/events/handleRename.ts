@@ -17,6 +17,7 @@ import {
 import {
 	getFolderPathFromString, removeExtension, getFileNameFromPathString,
 } from 'src/functions/utils';
+import { tr } from '../i18n';
 
 export function handleRename(
 	file: TAbstractFile,
@@ -335,7 +336,7 @@ async function renameFolderOnFileRename(
 
 	if (plugin.app.vault.getAbstractFileByPath(newFolderPath)) {
 		await plugin.app.fileManager.renameFile(file, oldPath);
-		new Notice('A folder with the same name already exists');
+		new Notice(tr('A folder with the same name already exists'));
 		return;
 	}
 	plugin.app.fileManager.renameFile(oldFolder, newFolderPath);

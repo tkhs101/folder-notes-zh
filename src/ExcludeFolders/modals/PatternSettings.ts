@@ -2,6 +2,7 @@ import { Modal, Setting, type App } from 'obsidian';
 import type FolderNotesPlugin from '../../main';
 import type { ExcludePattern } from 'src/ExcludeFolders/ExcludePattern';
 import { refreshAllFolderStyles } from 'src/functions/styleFunctions';
+import { tr } from '../../i18n';
 
 export default class PatternSettings extends Modal {
 	plugin: FolderNotesPlugin;
@@ -21,12 +22,11 @@ export default class PatternSettings extends Modal {
 	display(): void {
 		const { contentEl } = this;
 		contentEl.empty();
-		contentEl.createEl('h2', { text: 'Pattern settings' });
+		contentEl.createEl('h2', { text: tr('Pattern settings') });
 
 		new Setting(contentEl)
-			.setName('Disable folder name sync')
-			// eslint-disable-next-line max-len
-			.setDesc('Choose if the folder name should be renamed when the file name has been changed')
+			.setName(tr('Disable folder name sync'))
+			.setDesc(tr('Choose if the folder name should be renamed when the file name has been changed'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.pattern.disableSync)
@@ -37,9 +37,8 @@ export default class PatternSettings extends Modal {
 			);
 
 		new Setting(contentEl)
-			.setName('Disable auto creation of folder notes in this folder')
-			// eslint-disable-next-line max-len
-			.setDesc('Choose if a folder note should be created when a new folder is created that matches this pattern')
+			.setName(tr('Disable auto creation of folder notes in this folder'))
+			.setDesc(tr('Choose if a folder note should be created when a new folder is created that matches this pattern'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.pattern.disableAutoCreate)
@@ -50,8 +49,8 @@ export default class PatternSettings extends Modal {
 			);
 
 		new Setting(contentEl)
-			.setName('Don\'t show folder in folder overview')
-			.setDesc('Choose if the folder should be shown in the folder overview')
+			.setName(tr("Don't show folder in folder overview"))
+			.setDesc(tr('Choose if the folder should be shown in the folder overview'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.pattern.excludeFromFolderOverview)
@@ -62,8 +61,8 @@ export default class PatternSettings extends Modal {
 			);
 
 		new Setting(contentEl)
-			.setName('Show folder note in the file explorer')
-			.setDesc('Choose if the folder note should be shown in the file explorer')
+			.setName(tr('Show folder note in the file explorer'))
+			.setDesc(tr('Choose if the folder note should be shown in the file explorer'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.pattern.showFolderNote)
@@ -76,8 +75,8 @@ export default class PatternSettings extends Modal {
 			);
 
 		new Setting(contentEl)
-			.setName('Disable open folder note')
-			.setDesc('Choose if the folder note should be opened when the folder is opened')
+			.setName(tr('Disable open folder note'))
+			.setDesc(tr('Choose if the folder note should be opened when the folder is opened'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(this.pattern.disableFolderNote)
@@ -90,8 +89,8 @@ export default class PatternSettings extends Modal {
 
 		if (!this.pattern.disableFolderNote) {
 			new Setting(contentEl)
-				.setName('Collapse folder when opening folder note')
-				.setDesc('Choose if the folder should be collapsed when the folder note is opened')
+				.setName(tr('Collapse folder when opening folder note'))
+				.setDesc(tr('Choose if the folder should be collapsed when the folder note is opened'))
 				.addToggle((toggle) =>
 					toggle
 						.setValue(this.pattern.enableCollapsing)

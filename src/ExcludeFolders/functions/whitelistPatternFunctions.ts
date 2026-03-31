@@ -5,6 +5,7 @@ import { resyncArray } from './folderFunctions';
 import WhitelistPatternSettings from '../modals/WhitelistPatternSettings';
 import type { WhitelistedPattern } from '../WhitelistPattern';
 import { addWhitelistedFolder, updateWhitelistedFolder } from './whitelistFolderFunctions';
+import { tr } from '../../i18n';
 
 const REGEX_PREFIX = '{regex}';
 const STAR = '*';
@@ -99,7 +100,7 @@ export function addWhitelistedPatternListItem(
 	setting.addSearch((cb) => {
 		// @ts-expect-error Obsidian's public types don't expose containerEl on this control
 		cb.containerEl.addClass('fn-exclude-folder-path');
-		cb.setPlaceholder('Pattern');
+		cb.setPlaceholder(tr('Pattern'));
 		cb.setValue(pattern.string);
 		cb.onChange((value) => {
 			const exists = plugin.settings.whitelistFolders.some(
@@ -112,7 +113,7 @@ export function addWhitelistedPatternListItem(
 	});
 	setting.addButton((cb) => {
 		cb.setIcon('edit');
-		cb.setTooltip('Edit pattern');
+		cb.setTooltip(tr('Edit pattern'));
 		cb.onClick(() => {
 			new WhitelistPatternSettings(plugin.app, plugin, pattern).open();
 		});
@@ -120,7 +121,7 @@ export function addWhitelistedPatternListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('up-chevron-glyph');
-		cb.setTooltip('Move up');
+		cb.setTooltip(tr('Move up'));
 		cb.onClick(() => {
 			if (pattern.position === 0) { return; }
 			pattern.position -= 1;
@@ -146,7 +147,7 @@ export function addWhitelistedPatternListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('down-chevron-glyph');
-		cb.setTooltip('Move down');
+		cb.setTooltip(tr('Move down'));
 		cb.onClick(() => {
 			if (pattern.position === plugin.settings.whitelistFolders.length - 1) {
 				return;
@@ -175,7 +176,7 @@ export function addWhitelistedPatternListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('trash-2');
-		cb.setTooltip('Delete pattern');
+		cb.setTooltip(tr('Delete pattern'));
 		cb.onClick(() => {
 			void deletePattern(plugin, pattern);
 			setting.clear();

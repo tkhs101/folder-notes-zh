@@ -35,6 +35,7 @@ import { registerOverviewCommands } from './obsidian-folder-overview/src/Command
 import { updateOverviewView, updateViewDropdown } from './obsidian-folder-overview/src/main';
 import { FvIndexDB } from './obsidian-folder-overview/src/utils/IndexDB';
 import { updateAllOverviews } from './obsidian-folder-overview/src/utils/functions';
+import { tr } from './i18n';
 
 export default class FolderNotesPlugin extends Plugin {
 	settings: FolderNotesSettings;
@@ -419,7 +420,7 @@ export default class FolderNotesPlugin extends Plugin {
 			}
 		} catch (e) {
 			// eslint-disable-next-line max-len
-			new Notice('Error creating folder overview (folder notes plugin) - check console for more details');
+			new Notice(tr('Error creating folder overview (folder notes plugin) - check console for more details'));
 			console.error(e);
 		}
 	}

@@ -14,6 +14,7 @@ import {
 import { getWhitelistedFolder } from './whitelistFolderFunctions';
 import type { WhitelistedFolder } from '../WhitelistFolder';
 import type { WhitelistedPattern } from '../WhitelistPattern';
+import { tr } from '../../i18n';
 
 function combineExcluded(
 	plugin: FolderNotesPlugin,
@@ -237,7 +238,7 @@ export function addExcludeFolderListItem(
 		);
 		// @ts-expect-error Obsidian's public types don't include this property
 		cb.containerEl.addClass('fn-exclude-folder-path');
-		cb.setPlaceholder('Folder path');
+		cb.setPlaceholder(tr('Folder path'));
 		cb.setValue(excludedFolder.path || '');
 		cb.onChange((value) => {
 			if (value.startsWith('{regex}') || value.includes('*')) {
@@ -261,7 +262,7 @@ export function addExcludeFolderListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('edit');
-		cb.setTooltip('Edit folder note');
+		cb.setTooltip(tr('Edit folder note'));
 		cb.onClick(() => {
 			new ExcludedFolderSettings(plugin.app, plugin, excludedFolder).open();
 		});
@@ -270,7 +271,7 @@ export function addExcludeFolderListItem(
 	if (Platform.isDesktop || Platform.isTablet) {
 		setting.addButton((cb) => {
 			cb.setIcon('up-chevron-glyph');
-			cb.setTooltip('Move up');
+			cb.setTooltip(tr('Move up'));
 			cb.onClick(() => {
 				if (excludedFolder.position === 0) { return; }
 				excludedFolder.position -= 1;
@@ -292,7 +293,7 @@ export function addExcludeFolderListItem(
 
 		setting.addButton((cb) => {
 			cb.setIcon('down-chevron-glyph');
-			cb.setTooltip('Move down');
+			cb.setTooltip(tr('Move down'));
 			cb.onClick(() => {
 				if (excludedFolder.position === plugin.settings.excludeFolders.length - 1) {
 					return;
@@ -319,7 +320,7 @@ export function addExcludeFolderListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('trash-2');
-		cb.setTooltip('Delete excluded folder');
+		cb.setTooltip(tr('Delete excluded folder'));
 		cb.onClick(() => {
 			deleteExcludedFolder(plugin, excludedFolder);
 			setting.clear();

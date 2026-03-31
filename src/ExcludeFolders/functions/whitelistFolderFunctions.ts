@@ -11,6 +11,7 @@ import {
 	getWhitelistedFoldersByPattern,
 	addWhitelistedPatternListItem,
 } from './whitelistPatternFunctions';
+import { tr } from '../../i18n';
 
 export function getWhitelistedFolder(
 	plugin: FolderNotesPlugin,
@@ -134,7 +135,7 @@ export function addWhitelistFolderListItem(
 		);
 		// @ts-expect-error Obsidian's public types don't include this property
 		cb.containerEl.addClass('fn-exclude-folder-path');
-		cb.setPlaceholder('Folder path');
+		cb.setPlaceholder(tr('Folder path'));
 		cb.setValue(whitelistedFolder.path);
 		cb.onChange((value) => {
 			if (value.startsWith('{regex}') || value.includes('*')) {
@@ -159,14 +160,14 @@ export function addWhitelistFolderListItem(
 
 	new ButtonComponent(buttonContainer)
 		.setIcon('edit')
-		.setTooltip('Edit folder note')
+		.setTooltip(tr('Edit folder note'))
 		.onClick(() => {
 			new WhitelistFolderSettings(plugin.app, plugin, whitelistedFolder).open();
 		});
 
 	new ButtonComponent(buttonContainer)
 		.setIcon('up-chevron-glyph')
-		.setTooltip('Move up')
+		.setTooltip(tr('Move up'))
 		.onClick(() => {
 			if (whitelistedFolder.position === 0) { return; }
 			whitelistedFolder.position -= 1;
@@ -187,7 +188,7 @@ export function addWhitelistFolderListItem(
 
 	new ButtonComponent(buttonContainer)
 		.setIcon('down-chevron-glyph')
-		.setTooltip('Move down')
+		.setTooltip(tr('Move down'))
 		.onClick(() => {
 			if (whitelistedFolder.position === plugin.settings.whitelistFolders.length - 1) {
 				return;
@@ -212,7 +213,7 @@ export function addWhitelistFolderListItem(
 
 	new ButtonComponent(buttonContainer)
 		.setIcon('trash-2')
-		.setTooltip('Delete excluded folder')
+		.setTooltip(tr('Delete excluded folder'))
 		.onClick(() => {
 			void deleteWhitelistedFolder(plugin, whitelistedFolder);
 			setting.clear();

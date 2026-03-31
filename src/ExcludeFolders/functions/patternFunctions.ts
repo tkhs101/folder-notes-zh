@@ -4,6 +4,7 @@ import { Setting, Platform } from 'obsidian';
 import type { SettingsTab } from '../../settings/SettingsTab';
 import { addExcludedFolder, resyncArray, updateExcludedFolder } from './folderFunctions';
 import PatternSettings from '../modals/PatternSettings';
+import { tr } from '../../i18n';
 
 const REGEX_PREFIX = '{regex}';
 const STAR = '*';
@@ -97,7 +98,7 @@ export function addExcludePatternListItem(
 	setting.addSearch((cb) => {
 		// @ts-expect-error Obsidian's public types don't include containerEl on this control
 		cb.containerEl.addClass('fn-exclude-folder-path');
-		cb.setPlaceholder('Pattern');
+		cb.setPlaceholder(tr('Pattern'));
 		cb.setValue(pattern.string);
 		cb.onChange((value) => {
 			pattern.string = value;
@@ -106,7 +107,7 @@ export function addExcludePatternListItem(
 	});
 	setting.addButton((cb) => {
 		cb.setIcon('edit');
-		cb.setTooltip('Edit pattern');
+		cb.setTooltip(tr('Edit pattern'));
 		cb.onClick(() => {
 			new PatternSettings(plugin.app, plugin, pattern).open();
 		});
@@ -115,7 +116,7 @@ export function addExcludePatternListItem(
 	if (Platform.isDesktop || Platform.isTablet) {
 		setting.addButton((cb) => {
 			cb.setIcon('up-chevron-glyph');
-			cb.setTooltip('Move up');
+			cb.setTooltip(tr('Move up'));
 			cb.onClick(() => {
 				if (pattern.position === 0) { return; }
 				pattern.position -= 1;
@@ -142,7 +143,7 @@ export function addExcludePatternListItem(
 
 		setting.addButton((cb) => {
 			cb.setIcon('down-chevron-glyph');
-			cb.setTooltip('Move down');
+			cb.setTooltip(tr('Move down'));
 			cb.onClick(() => {
 				if (pattern.position === plugin.settings.excludeFolders.length - 1) {
 					return;
@@ -173,7 +174,7 @@ export function addExcludePatternListItem(
 
 	setting.addButton((cb) => {
 		cb.setIcon('trash-2');
-		cb.setTooltip('Delete pattern');
+		cb.setTooltip(tr('Delete pattern'));
 		cb.onClick(() => {
 			void deletePattern(plugin, pattern);
 			setting.clear();

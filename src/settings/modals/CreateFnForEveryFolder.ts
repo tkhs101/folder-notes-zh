@@ -3,6 +3,8 @@ import type FolderNotesPlugin from '../../main';
 import { createFolderNote, getFolderNote } from 'src/functions/folderNoteFunctions';
 import { getTemplatePlugins } from 'src/template';
 import { getExcludedFolder } from 'src/ExcludeFolders/functions/folderFunctions';
+import { tr } from '../../i18n';
+
 export default class ConfirmationModal extends Modal {
 	plugin: FolderNotesPlugin;
 	app: App;
@@ -33,22 +35,19 @@ export default class ConfirmationModal extends Modal {
 		}
 
 		const { contentEl } = this;
-		contentEl.createEl('h2', { text: 'Create folder note for every folder' });
+		contentEl.createEl('h2', { text: tr('Create folder note for every folder') });
 		const setting = new Setting(contentEl);
-		// eslint-disable-next-line max-len
-		setting.infoEl.createEl('p', { text: 'Make sure to backup your vault before using this feature.' }).style.color = '#fb464c';
-		// eslint-disable-next-line max-len
-		setting.infoEl.createEl('p', { text: 'This feature will create a folder note for every folder in your vault.' });
-		// eslint-disable-next-line max-len
-		setting.infoEl.createEl('p', { text: 'Every folder that already has a folder note will be ignored.' });
-		setting.infoEl.createEl('p', { text: 'Every excluded folder will be ignored.' });
+		setting.infoEl.createEl('p', { text: tr('Make sure to backup your vault before using this feature.') }).style.color = '#fb464c';
+		setting.infoEl.createEl('p', { text: tr('This feature will create a folder note for every folder in your vault.') });
+		setting.infoEl.createEl('p', { text: tr('Every folder that already has a folder note will be ignored.') });
+		setting.infoEl.createEl('p', { text: tr('Every excluded folder will be ignored.') });
 		if (
 			!this.plugin.settings.templatePath ||
 			this.plugin.settings.templatePath?.trim() === ''
 		) {
 			new Setting(contentEl)
-				.setName('Folder note file extension')
-				.setDesc('Choose the file extension for the folder notes.')
+				.setName(tr('Folder note file extension'))
+				.setDesc(tr('Choose the file extension for the folder notes.'))
 				.addDropdown((cb) => {
 					this.plugin.settings.supportedFileTypes.forEach((extension) => {
 						cb.addOption('.' + extension, extension);
@@ -57,12 +56,11 @@ export default class ConfirmationModal extends Modal {
 					cb.onChange(async (value) => {
 						this.extension = value;
 					});
-				},
-				);
+				});
 		}
 		new Setting(contentEl)
 			.addButton((cb: ButtonComponent) => {
-				cb.setButtonText('Create');
+				cb.setButtonText(tr('Create'));
 				cb.setCta();
 				cb.buttonEl.focus();
 				cb.onClick(async () => {
@@ -73,7 +71,7 @@ export default class ConfirmationModal extends Modal {
 						this.extension = '.' + this.plugin.settings.templatePath.split('.').pop();
 					}
 					if (this.extension === '.ask') {
-						return new Notice('Please choose a file extension');
+						return new Notice(tr('Please choose a file extension'));
 					}
 					this.close();
 					const folders = this.app.vault
@@ -94,7 +92,7 @@ export default class ConfirmationModal extends Modal {
 				});
 			})
 			.addButton((cb: ButtonComponent) => {
-				cb.setButtonText('Cancel');
+				cb.setButtonText(tr('Cancel'));
 				cb.onClick(async () => {
 					this.close();
 				});

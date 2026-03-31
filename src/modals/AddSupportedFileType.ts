@@ -1,6 +1,7 @@
 import { Modal, Setting, Notice, type App, type SettingTab } from 'obsidian';
 import type FolderNotesPlugin from '../main';
 import type { ListComponent } from 'src/functions/ListComponent';
+import { tr } from '../i18n';
 
 export default class AddSupportedFileModal extends Modal {
 	plugin: FolderNotesPlugin;
@@ -19,15 +20,14 @@ export default class AddSupportedFileModal extends Modal {
 
 	onOpen(): void {
 		const { contentEl } = this;
-		// close when user presses enter
 		contentEl.addEventListener('keydown', (e) => {
 			if (e.key === 'Enter') {
 				this.close();
 			}
 		});
-		contentEl.createEl('h2', { text: 'Extension name' });
+		contentEl.createEl('h2', { text: tr('Extension name') });
 		new Setting(contentEl)
-			.setName('Enter the name of the extension (only the short form, e.g. "md")')
+			.setName(tr('Enter the name of the extension (only the short form, e.g. "md")'))
 			.addText((text) =>
 				text
 					.setValue('')
@@ -47,8 +47,7 @@ export default class AddSupportedFileModal extends Modal {
 			contentEl.empty();
 			this.settingsTab.display();
 		} else if (this.plugin.settings.supportedFileTypes.includes(this.name.toLowerCase())) {
-			new Notice('This extension is already supported');
-			return;
+			new Notice(tr('This extension is already supported'));
 		} else {
 			await this.list.addValue(this.name.toLowerCase());
 			this.settingsTab.display();

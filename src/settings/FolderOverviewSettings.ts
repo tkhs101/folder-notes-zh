@@ -1,17 +1,17 @@
 import { Setting } from 'obsidian';
 import type { SettingsTab } from './SettingsTab';
 import { createOverviewSettings } from 'src/obsidian-folder-overview/src/settings';
+import { tr } from '../i18n';
 
 export async function renderFolderOverview(settingsTab: SettingsTab): Promise<void> {
 	const { plugin } = settingsTab;
 	const defaultOverviewSettings = plugin.settings.defaultOverview;
 	const containerEl = settingsTab.settingsPage;
 
-	containerEl.createEl('h3', { text: 'Global settings' });
+	containerEl.createEl('h3', { text: tr('Global settings') });
 	new Setting(containerEl)
-		.setName('Auto-update links without opening the overview')
-		// eslint-disable-next-line max-len
-		.setDesc('If enabled, the links that appear in the graph view will be updated even when you don\'t have the overview open somewhere.')
+		.setName(tr('Auto-update links without opening the overview'))
+		.setDesc(tr('If enabled, the links that appear in the graph view will be updated even when you don\'t have the overview open somewhere.'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(plugin.settings.fvGlobalSettings.autoUpdateLinks)
@@ -26,12 +26,12 @@ export async function renderFolderOverview(settingsTab: SettingsTab): Promise<vo
 				}),
 		);
 
-	containerEl.createEl('h3', { text: 'Overviews default settings' });
+	containerEl.createEl('h3', { text: tr('Overviews default settings') });
 	const pEl = containerEl.createEl('p', {
-		text: 'Edit the default settings for new folder overviews, ',
+		text: tr('Edit the default settings for new folder overviews, '),
 		cls: 'setting-item-description',
 	});
-	const span = createSpan({ text: "this won't apply to already existing overviews.", cls: '' });
+	const span = createSpan({ text: tr("this won't apply to already existing overviews."), cls: '' });
 	const accentColor = (settingsTab.app.vault.getConfig('accentColor') as string) || '#7d5bed';
 	span.setAttr('style', `color: ${accentColor};`);
 	pEl.appendChild(span);

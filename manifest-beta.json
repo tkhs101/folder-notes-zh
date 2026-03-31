@@ -1,12 +1,11 @@
 {
-  "id": "folder-notes",
-  "name": "Folder notes beta",
-  "version": "1.8.17-5-beta",
+  "id": "folder-notes-zh",
+  "name": "Folder Notes 中文版 Beta",
+  "version": "1.8.20-1-beta",
   "minAppVersion": "0.15.0",
-  "description": "Create notes within folders that can be accessed without collapsing the folder, similar to the functionality offered in Notion.",
-  "author": "Lost Paul",
-  "authorUrl": "https://github.com/LostPaul",
-  "fundingUrl": "https://ko-fi.com/paul305844",
-  "helpUrl": "https://lostpaul.github.io/obsidian-folder-notes/",
+  "description": "在文件夹中创建可直接访问的笔记，无需折叠文件夹，类似 Notion 的交互方式。",
+  "author": "tkhs101",
+  "authorUrl": "https://github.com/tkhs101",
+  "helpUrl": "https://github.com/tkhs101/folder-notes-zh",
   "isDesktopOnly": false
 }

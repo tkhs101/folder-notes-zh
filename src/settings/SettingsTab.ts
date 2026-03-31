@@ -15,6 +15,7 @@ import { renderExcludeFolders } from './ExcludedFoldersSettings';
 import { getFolderPathFromString } from '../functions/utils';
 import type { WhitelistedFolder } from 'src/ExcludeFolders/WhitelistFolder';
 import type { WhitelistedPattern } from 'src/ExcludeFolders/WhitelistPattern';
+import { tr } from '../i18n';
 
 export interface FolderNotesSettings {
 	syncFolderName: boolean;
@@ -289,7 +290,7 @@ export class SettingsTab extends PluginSettingTab {
 		const tabBar = containerEl.createEl('nav', { cls: 'fn-settings-tab-bar' });
 		for (const [tabId, tabInfo] of Object.entries(settingsTab.TABS)) {
 			const tabEl = tabBar.createEl('div', { cls: 'fn-settings-tab' });
-			tabEl.createEl('div', { cls: 'fn-settings-tab-name', text: tabInfo.name });
+			tabEl.createEl('div', { cls: 'fn-settings-tab-name', text: tr(tabInfo.name) });
 			if (
 				plugin &&
 				plugin.settings.settingsTab.toLocaleLowerCase() ===
@@ -321,7 +322,7 @@ export class SettingsTab extends PluginSettingTab {
 	}
 
 	renameFolderNotes(): void {
-		new Notice('Starting to update folder notes...');
+		new Notice(tr('Starting to update folder notes...'));
 		const oldTemplate = this.plugin.settings.oldFolderNoteName ?? '{{folder_name}}';
 
 		for (const folder of this.app.vault.getAllLoadedFiles()) {
@@ -357,11 +358,11 @@ export class SettingsTab extends PluginSettingTab {
 
 		this.plugin.settings.oldFolderNoteName = this.plugin.settings.folderNoteName;
 		this.plugin.saveSettings();
-		new Notice('Finished updating folder notes');
+		new Notice(tr('Finished updating folder notes'));
 	}
 
 	switchStorageLocation(oldMethod: string): void {
-		new Notice('Starting to switch storage location...');
+		new Notice(tr('Starting to switch storage location...'));
 		this.app.vault.getAllLoadedFiles().forEach((file) => {
 			if (file instanceof TFolder) {
 				const folderNote = getFolderNote(this.plugin, file.path, oldMethod);
@@ -385,7 +386,7 @@ export class SettingsTab extends PluginSettingTab {
 				}
 			}
 		});
-		new Notice('Finished switching storage location');
+		new Notice(tr('Finished switching storage location'));
 	}
 
 	onClose(): void {

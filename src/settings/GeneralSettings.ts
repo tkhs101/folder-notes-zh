@@ -9,6 +9,7 @@ import { TemplateSuggest } from '../suggesters/TemplateSuggester';
 import { refreshAllFolderStyles } from '../functions/styleFunctions';
 import BackupWarningModal from './modals/BackupWarning';
 import RenameFolderNotesModal from './modals/RenameFns';
+import { tr } from '../i18n';
 
 let debounceTimer: NodeJS.Timeout;
 
@@ -16,8 +17,8 @@ let debounceTimer: NodeJS.Timeout;
 export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	const containerEl = settingsTab.settingsPage;
 	const nameSetting = new Setting(containerEl)
-		.setName('Folder note name template')
-		.setDesc('All folder notes will use this name. Use {{folder_name}} to insert the folder’s name. Existing notes won’t update automatically; click on the button to apply the new name.')
+		.setName(tr('Folder note name template'))
+		.setDesc(tr('All folder notes will use this name. Use {{folder_name}} to insert the folder’s name. Existing notes won’t update automatically; click on the button to apply the new name.'))
 		.addText((text) =>
 			text
 				.setValue(settingsTab.plugin.settings.folderNoteName)
@@ -34,36 +35,34 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 								settingsTab.display();
 								settingsTab.showFolderNameInTabTitleSetting = true;
 							}
-						} else {
-							if (settingsTab.showFolderNameInTabTitleSetting) {
-								settingsTab.display();
-								settingsTab.showFolderNameInTabTitleSetting = false;
-							}
+						} else if (settingsTab.showFolderNameInTabTitleSetting) {
+							settingsTab.display();
+							settingsTab.showFolderNameInTabTitleSetting = false;
 						}
 					}, FOLDER_NOTE_NAME_DEBOUNCE_MS);
 				}),
 		)
 		.addButton((button) =>
 			button
-				.setButtonText('Rename existing folder notes')
+				.setButtonText(tr('Rename existing folder notes'))
 				.setCta()
 				.onClick(async () => {
 					new RenameFolderNotesModal(
 						settingsTab.plugin,
-						'Rename all existing folder notes',
-						'When you click on "Confirm" all existing folder notes will be renamed to the new folder note name.',
+						tr('Rename all existing folder notes'),
+						tr('When you click on "Confirm" all existing folder notes will be renamed to the new folder note name.'),
 						settingsTab.renameFolderNotes,
-						[])
-						.open();
+						[],
+					).open();
 				}),
 		);
-	nameSetting.infoEl.appendText('Requires a restart to take effect');
+	nameSetting.infoEl.appendText(tr('Requires a restart to take effect'));
 	nameSetting.infoEl.style.color = settingsTab.app.vault.getConfig('accentColor') as string || '#7d5bed';
 
 	if (!settingsTab.plugin.settings.folderNoteName.includes('{{folder_name}}')) {
 		new Setting(containerEl)
-			.setName('Display Folder Name in Tab Title')
-			.setDesc('Use the actual folder name in the tab title instead of the custom folder note name (e.g., "Folder Note").')
+			.setName(tr('Display Folder Name in Tab Title'))
+			.setDesc(tr('Use the actual folder name in the tab title instead of the custom folder note name (e.g., "Folder Note").'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.tabManagerEnabled)
@@ -82,13 +81,13 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	}
 
 	new Setting(containerEl)
-		.setName('Default file type for new folder notes')
-		.setDesc('Choose the default file type (canvas, markdown, ...) used when creating new folder notes.')
+		.setName(tr('Default file type for new folder notes'))
+		.setDesc(tr('Choose the default file type (canvas, markdown, ...) used when creating new folder notes.'))
 		.addDropdown((dropdown) => {
-			dropdown.addOption('.ask', 'ask for file type');
+			dropdown.addOption('.ask', tr('ask for file type'));
 			settingsTab.plugin.settings.supportedFileTypes.forEach((type) => {
 				if (type === '.md' || type === 'md') {
-					dropdown.addOption('.md', 'markdown');
+					dropdown.addOption('.md', tr('Markdown'));
 				} else {
 					dropdown.addOption('.' + type, type);
 				}
@@ -126,10 +125,10 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 		});
 
 	const setting0 = new Setting(containerEl);
-	setting0.setName('Supported file types');
+	setting0.setName(tr('Supported file types'));
 	const desc0 = document.createDocumentFragment();
 	desc0.append(
-		'Specify which file types are allowed as folder notes. Applies to both new and existing folders. Adding many types may affect performance.',
+		tr('Specify which file types are allowed as folder notes. Applies to both new and existing folders. Adding many types may affect performance.'),
 	);
 	setting0.setDesc(desc0);
 	const list = new ListComponent(
@@ -150,11 +149,11 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	) {
 		setting0.addDropdown((dropdown) => {
 			const options = [
-				{ value: 'md', label: 'Markdown' },
-				{ value: 'canvas', label: 'Canvas' },
-				{ value: 'base', label: 'Bases' },
-				{ value: 'excalidraw', label: 'Excalidraw' },
-				{ value: 'custom', label: 'Custom extension' },
+				{ value: 'md', label: tr('Markdown') },
+				{ value: 'canvas', label: tr('Canvas') },
+				{ value: 'base', label: tr('Bases') },
+				{ value: 'excalidraw', label: tr('Excalidraw') },
+				{ value: 'custom', label: tr('Custom extension') },
 			];
 
 			options.forEach((option) => {
@@ -181,7 +180,7 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	} else {
 		setting0.addButton((button) =>
 			button
-				.setButtonText('Add custom file type')
+				.setButtonText(tr('Add custom file type'))
 				.setCta()
 				.onClick(async () => {
 					new AddSupportedFileModal(
@@ -194,13 +193,12 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 		);
 	}
 
-
 	const templateSetting = new Setting(containerEl)
-		.setDesc('Can be used with templater/templates plugin. If you add the location of the templates there.')
-		.setName('Template path')
+		.setDesc(tr('Can be used with templater/templates plugin. If you add the location of the templates there.'))
+		.setName(tr('Template path'))
 		.addSearch((cb) => {
 			new TemplateSuggest(cb.inputEl, settingsTab.plugin);
-			cb.setPlaceholder('Template path');
+			cb.setPlaceholder(tr('Template path'));
 			const templateFile = settingsTab.plugin.app.vault.getAbstractFileByPath(
 				settingsTab.plugin.settings.templatePath,
 			);
@@ -211,20 +209,19 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 					settingsTab.plugin.settings.templatePath = '';
 					await settingsTab.plugin.saveSettings();
 					settingsTab.display();
-					return;
 				}
 			});
 		});
-	templateSetting.infoEl.appendText('Requires a restart to take effect');
+	templateSetting.infoEl.appendText(tr('Requires a restart to take effect'));
 	templateSetting.infoEl.style.color = settingsTab.app.vault.getConfig('accentColor') as string || '#7d5bed';
 
 	const storageLocation = new Setting(containerEl)
-		.setName('Storage location')
-		.setDesc('Choose where to store the folder notes')
+		.setName(tr('Storage location'))
+		.setDesc(tr('Choose where to store the folder notes'))
 		.addDropdown((dropdown) =>
 			dropdown
-				.addOption('insideFolder', 'Inside the folder')
-				.addOption('parentFolder', 'In the parent folder')
+				.addOption('insideFolder', tr('Inside the folder'))
+				.addOption('parentFolder', tr('In the parent folder'))
 				.setValue(settingsTab.plugin.settings.storageLocation)
 				.onChange(async (value: 'insideFolder' | 'parentFolder' | 'vaultFolder') => {
 					settingsTab.plugin.settings.storageLocation = value;
@@ -235,7 +232,7 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 		)
 		.addButton((button) =>
 			button
-				.setButtonText('Switch')
+				.setButtonText(tr('Switch'))
 				.setCta()
 				.onClick(async () => {
 					let oldStorageLocation = settingsTab.plugin.settings.storageLocation;
@@ -246,32 +243,31 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 					}
 					new BackupWarningModal(
 						settingsTab.plugin,
-						'Switch storage location',
-						'When you click on "Confirm" all folder notes will be moved to the new storage location.',
+						tr('Switch storage location'),
+						tr('When you click on "Confirm" all folder notes will be moved to the new storage location.'),
 						settingsTab.switchStorageLocation,
 						[oldStorageLocation],
 					).open();
 				}),
 		);
-	storageLocation.infoEl.appendText('Requires a restart to take effect');
+	storageLocation.infoEl.appendText(tr('Requires a restart to take effect'));
 	storageLocation.infoEl.style.color = settingsTab.app.vault.getConfig('accentColor') as string || '#7d5bed';
 
 	if (settingsTab.plugin.settings.storageLocation === 'parentFolder') {
 		new Setting(containerEl)
-			.setName('Delete folder notes when deleting the folder')
-			.setDesc('Delete the folder note when deleting the folder')
+			.setName(tr('Delete folder notes when deleting the folder'))
+			.setDesc(tr('Delete the folder note when deleting the folder'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.syncDelete)
 					.onChange(async (value) => {
 						settingsTab.plugin.settings.syncDelete = value;
 						await settingsTab.plugin.saveSettings();
-					},
-					),
+					}),
 			);
 		new Setting(containerEl)
-			.setName('Move folder notes when moving the folder')
-			.setDesc('Move the folder note file along with the folder when it is moved')
+			.setName(tr('Move folder notes when moving the folder'))
+			.setDesc(tr('Move the folder note file along with the folder when it is moved'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.syncMove)
@@ -281,12 +277,13 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 					}),
 			);
 	}
+
 	if (Platform.isDesktopApp) {
-		settingsTab.settingsPage.createEl('h3', { text: 'Keyboard Shortcuts' });
+		settingsTab.settingsPage.createEl('h3', { text: tr('Keyboard Shortcuts') });
 
 		new Setting(containerEl)
-			.setName('Key for creating folder note')
-			.setDesc('The key combination to create a folder note')
+			.setName(tr('Key for creating folder note'))
+			.setDesc(tr('The key combination to create a folder note'))
 			.addDropdown((dropdown) => {
 				if (!Platform.isMacOS) {
 					dropdown.addOption('ctrl', 'Ctrl + Click');
@@ -305,10 +302,10 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 			});
 
 		new Setting(containerEl)
-			.setName('Key for opening folder note')
-			.setDesc('Select the combination to open a folder note')
+			.setName(tr('Key for opening folder note'))
+			.setDesc(tr('Select the combination to open a folder note'))
 			.addDropdown((dropdown) => {
-				dropdown.addOption('click', 'Mouse Click');
+				dropdown.addOption('click', tr('Mouse Click'));
 				if (!Platform.isMacOS) {
 					dropdown.addOption('ctrl', 'Ctrl + Click');
 					dropdown.addOption('alt', 'Alt + Click');
@@ -333,11 +330,11 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 			});
 	}
 
-	settingsTab.settingsPage.createEl('h3', { text: 'Folder note behavior' });
+	settingsTab.settingsPage.createEl('h3', { text: tr('Folder note behavior') });
 
 	new Setting(containerEl)
-		.setName('Confirm folder note deletion')
-		.setDesc('Ask for confirmation before deleting a folder note')
+		.setName(tr('Confirm folder note deletion'))
+		.setDesc(tr('Ask for confirmation before deleting a folder note'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.showDeleteConfirmation)
@@ -349,12 +346,12 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 		);
 
 	new Setting(containerEl)
-		.setName('Deleted folder notes')
-		.setDesc('What happens to the folder note after you delete it')
+		.setName(tr('Deleted folder notes'))
+		.setDesc(tr('What happens to the folder note after you delete it'))
 		.addDropdown((dropdown) => {
-			dropdown.addOption('trash', 'Move to system trash');
-			dropdown.addOption('obsidianTrash', 'Move to Obsidian trash (.trash folder)');
-			dropdown.addOption('delete', 'Delete permanently');
+			dropdown.addOption('trash', tr('Move to system trash'));
+			dropdown.addOption('obsidianTrash', tr('Move to Obsidian trash (.trash folder)'));
+			dropdown.addOption('delete', tr('Delete permanently'));
 			dropdown.setValue(settingsTab.plugin.settings.deleteFilesAction);
 			dropdown.onChange(async (value: 'trash' | 'delete' | 'obsidianTrash') => {
 				settingsTab.plugin.settings.deleteFilesAction = value;
@@ -365,8 +362,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 
 	if (Platform.isDesktop) {
 		const setting3 = new Setting(containerEl);
-		setting3.setName('Open folder note in a new tab by default');
-		setting3.setDesc('Always open folder notes in a new tab unless the note is already open in the current tab.');
+		setting3.setName(tr('Open folder note in a new tab by default'));
+		setting3.setDesc(tr('Always open folder notes in a new tab unless the note is already open in the current tab.'));
 		setting3.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.openInNewTab)
@@ -376,14 +373,14 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 					settingsTab.display();
 				}),
 		);
-		setting3.infoEl.appendText('Requires a restart to take effect');
+		setting3.infoEl.appendText(tr('Requires a restart to take effect'));
 		setting3.infoEl.style.color = settingsTab.app.vault.getConfig('accentColor') as string || '#7d5bed';
 	}
 
 	if (settingsTab.plugin.settings.openInNewTab) {
 		new Setting(containerEl)
-			.setName('Focus existing tab instead of creating a new one')
-			.setDesc('If a folder note is already open in a tab, focus that tab instead of creating a new one.')
+			.setName(tr('Focus existing tab instead of creating a new one'))
+			.setDesc(tr('If a folder note is already open in a tab, focus that tab instead of creating a new one.'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.focusExistingTab)
@@ -396,8 +393,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	}
 
 	new Setting(containerEl)
-		.setName('Sync folder name')
-		.setDesc('Automatically rename the folder note when the folder name is changed')
+		.setName(tr('Sync folder name'))
+		.setDesc(tr('Automatically rename the folder note when the folder name is changed'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.syncFolderName)
@@ -408,22 +405,22 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 				}),
 		);
 
-	settingsTab.settingsPage.createEl('h4', { text: 'Automation settings' });
+	settingsTab.settingsPage.createEl('h4', { text: tr('Automation settings') });
 
 	new Setting(containerEl)
-		.setName('Create folder notes for all folders')
-		.setDesc('Generate folder notes for every folder in the vault.')
+		.setName(tr('Create folder notes for all folders'))
+		.setDesc(tr('Generate folder notes for every folder in the vault.'))
 		.addButton((cb) => {
 			cb.setIcon('plus');
-			cb.setTooltip('Create folder notes');
+			cb.setTooltip(tr('Create folder notes'));
 			cb.onClick(async () => {
 				new ConfirmationModal(settingsTab.app, settingsTab.plugin).open();
 			});
 		});
 
 	new Setting(containerEl)
-		.setName('Auto-create on folder creation')
-		.setDesc('Automatically create a folder note whenever a new folder is added.')
+		.setName(tr('Auto-create on folder creation'))
+		.setDesc(tr('Automatically create a folder note whenever a new folder is added.'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.autoCreate)
@@ -436,8 +433,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 
 	if (settingsTab.plugin.settings.autoCreate) {
 		new Setting(containerEl)
-			.setName('Auto-open after creation')
-			.setDesc('Open the folder note immediately after it’s created automatically.')
+			.setName(tr('Auto-open after creation'))
+			.setDesc(tr('Open the folder note immediately after it’s created automatically.'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.autoCreateFocusFiles)
@@ -449,8 +446,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 			);
 
 		new Setting(containerEl)
-			.setName('Auto-create for attachment folders')
-			.setDesc('Also automatically create folder notes for attachment folders (e.g., "Attachments", "Media", etc.).')
+			.setName(tr('Auto-create for attachment folders'))
+			.setDesc(tr('Also automatically create folder notes for attachment folders (e.g., "Attachments", "Media", etc.).'))
 			.addToggle((toggle) =>
 				toggle
 					.setValue(settingsTab.plugin.settings.autoCreateForAttachmentFolder)
@@ -463,8 +460,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 	}
 
 	new Setting(containerEl)
-		.setName('Auto-create when creating notes')
-		.setDesc('Automatically create a folder note when a regular note is created inside a folder. Works for supported file types only.')
+		.setName(tr('Auto-create when creating notes'))
+		.setDesc(tr('Automatically create a folder note when a regular note is created inside a folder. Works for supported file types only.'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.autoCreateForFiles)
@@ -475,23 +472,22 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 				}),
 		);
 
-	settingsTab.settingsPage.createEl('h3', { text: 'Integration & Compatibility' });
+	settingsTab.settingsPage.createEl('h3', { text: tr('Integration & Compatibility') });
 
 	const desc1 = document.createDocumentFragment();
-
 	const link = document.createElement('a');
 	link.href = 'https://github.com/snezhig/obsidian-front-matter-title';
 	link.textContent = 'front matter title plugin';
 	link.target = '_blank';
 
 	desc1.append(
-		'Allows you to use the ',
+		tr('Allows you to use the '),
 		link,
-		' with folder notes. It allows you to set the folder name to some name you set in the front matter.',
+		tr(' with folder notes. It allows you to set the folder name to some name you set in the front matter.'),
 	);
 
 	const fmtpSetting = new Setting(containerEl)
-		.setName('Enable front matter title plugin integration')
+		.setName(tr('Enable front matter title plugin integration'))
 		.setDesc(desc1)
 		.addToggle((toggle) =>
 			toggle
@@ -524,14 +520,14 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 					settingsTab.display();
 				}),
 		);
-	fmtpSetting.infoEl.appendText('Requires a restart to take effect');
+	fmtpSetting.infoEl.appendText(tr('Requires a restart to take effect'));
 	fmtpSetting.infoEl.style.color = settingsTab.app.vault.getConfig('accentColor') as string || '#7d5bed';
 
-	settingsTab.settingsPage.createEl('h3', { text: 'Session & Persistence' });
+	settingsTab.settingsPage.createEl('h3', { text: tr('Session & Persistence') });
 
 	new Setting(containerEl)
-		.setName('Persist tab after restart')
-		.setDesc('Restore the same settings tab after restarting Obsidian.')
+		.setName(tr('Persist tab after restart'))
+		.setDesc(tr('Restore the same settings tab after restarting Obsidian.'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.persistentSettingsTab.afterRestart)
@@ -543,8 +539,8 @@ export async function renderGeneral(settingsTab: SettingsTab): Promise<void> {
 		);
 
 	new Setting(containerEl)
-		.setName('Persist tab during session only')
-		.setDesc('Keep the current settings tab open during the session, but reset it after a restart or reload.')
+		.setName(tr('Persist tab during session only'))
+		.setDesc(tr('Keep the current settings tab open during the session, but reset it after a restart or reload.'))
 		.addToggle((toggle) =>
 			toggle
 				.setValue(settingsTab.plugin.settings.persistentSettingsTab.afterChangingTab)

@@ -7,6 +7,7 @@ import {
 	addWhitelistedFolder,
 } from '../functions/whitelistFolderFunctions';
 import { addWhitelistedPatternListItem } from '../functions/whitelistPatternFunctions';
+import { tr } from '../../i18n';
 
 export default class WhitelistedFoldersSettings extends Modal {
 	plugin: FolderNotesPlugin;
@@ -20,17 +21,16 @@ export default class WhitelistedFoldersSettings extends Modal {
 	}
 
 	onOpen(): void {
-
 		const { contentEl } = this;
-		contentEl.createEl('h2', { text: 'Manage whitelisted folders' });
+		contentEl.createEl('h2', { text: tr('Manage whitelisted folders') });
 
 		new Setting(contentEl)
-			.setName('Add whitelisted folder')
+			.setName(tr('Add whitelisted folder'))
 			.setClass('add-exclude-folder-item')
 			.addButton((cb) => {
 				cb.setIcon('plus');
 				cb.setClass('add-exclude-folder');
-				cb.setTooltip('Add whitelisted folder');
+				cb.setTooltip(tr('Add whitelisted folder'));
 				cb.onClick(() => {
 					const whitelistedFolder = new WhitelistedFolder(
 						'', this.plugin.settings.whitelistFolders.length,
