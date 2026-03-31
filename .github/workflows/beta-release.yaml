@@ -1,6 +1,6 @@
 # https://github.com/SilentVoid13/Templater/blob/master/.github/workflows/release.yml
 
-name: Plugin-beta release
+name: Beta Release
 on:
   push:
     tags:
@@ -69,6 +69,6 @@ jobs:
         with:
           name: Beta release ${{ env.RELEASE_NAME }}
           prerelease: true
-          artifacts: "main.js,manifest.json,styles.css"
+          artifacts: "main.js,manifest-beta.json,styles.css"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.VERSION }}

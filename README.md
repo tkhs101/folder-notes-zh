@@ -41,6 +41,21 @@ git push origin 1.8.20
 - `manifest.json`
 - `styles.css`
 
+## Beta 发布
+
+如果你想发布 Beta 版本，可以使用类似下面的 tag：
+
+```bash
+git tag 1.8.20-1-beta
+git push origin 1.8.20-1-beta
+```
+
+Beta 工作流会上传：
+
+- `main.js`
+- `manifest-beta.json`
+- `styles.css`
+
 ## 致谢
 
 原始项目作者为 [Lost Paul](https://github.com/LostPaul)。本仓库在原项目基础上进行了中文化和发布整理。
